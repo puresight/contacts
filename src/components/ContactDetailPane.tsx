@@ -64,6 +64,9 @@ export function ContactDetailPane({
   const [tab, setTab] = useState<'timeline' | 'suite'>('timeline');
   const [composing, setComposing] = useState(false);
 
+  const primaryEmail = contact.emails[0]?.value;
+  const primaryPhone = contact.phones[0]?.value;
+
   const sorted = useMemo(
     () => [...interactions].sort((a, b) => b.occurredAt.localeCompare(a.occurredAt)),
     [interactions],
@@ -94,7 +97,7 @@ export function ContactDetailPane({
           >
             <X className="h-5 w-5" />
           </button>
-          <Avatar name={contact.name} email={contact.email} size="md" />
+          <Avatar name={contact.name} email={primaryEmail} size="md" />
           <div className="min-w-0">
             <h2 className="truncate font-semibold text-slate-900">{contact.name}</h2>
             <p className="truncate text-sm text-slate-500">
@@ -127,25 +130,25 @@ export function ContactDetailPane({
 
       <div className="flex-1 overflow-y-auto px-4 py-4 md:px-6">
         <div className="mb-4 flex gap-2">
-          {contact.phone && (
+          {primaryPhone && (
             <a
-              href={`tel:${contact.phone}`}
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-700 ring-1 ring-emerald-200 transition hover:bg-emerald-100 active:bg-emerald-200"
+              href={`tel:${primaryPhone}`}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100 active:bg-emerald-200"
             >
               <Phone className="h-4 w-4" /> Call
             </a>
           )}
-          {contact.email && (
+          {primaryEmail && (
             <a
-              href={`mailto:${contact.email}`}
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 py-2.5 text-sm font-medium text-indigo-700 ring-1 ring-indigo-200 transition hover:bg-indigo-100 active:bg-indigo-200"
+              href={`mailto:${primaryEmail}`}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-indigo-50 px-3 py-2.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-100 active:bg-indigo-200"
             >
               <Mail className="h-4 w-4" /> Email
             </a>
           )}
           <button
             onClick={() => setComposing(true)}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-100 px-3 py-2.5 text-sm font-medium text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-200 active:bg-slate-300"
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-slate-100 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 active:bg-slate-300"
           >
             <Plus className="h-4 w-4" /> Log
           </button>
@@ -161,14 +164,12 @@ export function ContactDetailPane({
               </span>
             )}
           </div>
-          <dl className="mt-3 space-y-2 text-sm">
-            {contact.company && (
-              <Row icon={Building2} label="Company" value={contact.company} />
-            )}
-            {contact.title && <Row icon={Briefcase} label="Title" value={contact.title} />}
-            {contact.email && <Row icon={Mail} label="Email" value={contact.email} />}
-            {contact.phone && <Row icon={Phone} label="Phone" value={contact.phone} />}
-          </dl>
+          {(contact.company || contact.title) && (
+            <dl className="mt-3 space-y-2 text-sm">
+              {contact.company && <Row icon={Building2} label="Company" value={contact.company} />}
+              {contact.title && <Row icon={Briefcase} label="Title" value={contact.title} />}
+            </dl>
+          )}
           {contact.tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-1.5">
               {contact.tags.map((t) => (
@@ -183,6 +184,8 @@ export function ContactDetailPane({
           )}
           {contact.notes && <p className="mt-3 text-sm leading-relaxed text-slate-600">{contact.notes}</p>}
         </div>
+
+        <LabeledSections contact={contact} />
 
         <div className="mb-3 flex gap-1 rounded-xl bg-slate-100 p-1">
           {(['timeline', 'suite'] as const).map((t) => (
@@ -313,6 +316,148 @@ function Row({
       <Icon className="h-4 w-4 shrink-0 text-slate-400" />
       <dt className="shrink-0 text-slate-500">{label}</dt>
       <dd className="min-w-0 flex-1 truncate text-right font-medium text-slate-800">{value}</dd>
+    </div>
+  );
+}
+
+function LabelChip({ text }: { text: string }) {
+  return (
+    <span className="shrink-0 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-indigo-600">
+      {text}
+    </span>
+  );
+}
+
+function dateHint(iso: string): string | null {
+  const d = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const next = new Date(d);
+  next.setFullYear(today.getFullYear());
+  if (next < today) next.setFullYear(today.getFullYear() + 1);
+  const days = Math.round((next.getTime() - today.getTime()) / 86_400_000);
+  if (days === 0) return 'today';
+  if (days === 1) return 'tomorrow';
+  return `in ${days} days`;
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function LabeledSections({ contact }: { contact: Contact }) {
+  const hasAny =
+    contact.emails.length > 0 ||
+    contact.phones.length > 0 ||
+    contact.urls.length > 0 ||
+    contact.addresses.length > 0 ||
+    contact.dates.length > 0;
+
+  if (!hasAny) return null;
+
+  return (
+    <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+      {(contact.emails.length > 0 || contact.phones.length > 0) && (
+        <section className="rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Contact Info
+          </h3>
+          <ul className="space-y-2">
+            {contact.emails.map((e) => (
+              <li key={e.id} className="flex items-center gap-2 text-sm">
+                <LabelChip text={e.label} />
+                <a
+                  href={`mailto:${e.value}`}
+                  className="min-w-0 flex-1 truncate font-medium text-indigo-700 hover:underline"
+                >
+                  {e.value}
+                </a>
+              </li>
+            ))}
+            {contact.phones.map((p) => (
+              <li key={p.id} className="flex items-center gap-2 text-sm">
+                <LabelChip text={p.label} />
+                <a
+                  href={`tel:${p.value}`}
+                  className="min-w-0 flex-1 truncate font-medium text-slate-800 hover:underline"
+                >
+                  {p.value}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {contact.urls.length > 0 && (
+        <section className="rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Links</h3>
+          <ul className="space-y-2">
+            {contact.urls.map((u) => (
+              <li key={u.id} className="flex items-center gap-2 text-sm">
+                <LabelChip text={u.label} />
+                <a
+                  href={u.value}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="min-w-0 flex-1 truncate font-medium text-indigo-700 hover:underline"
+                >
+                  {u.value.replace(/^https?:\/\//, '')}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {contact.addresses.length > 0 && (
+        <section className="rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Locations
+          </h3>
+          <ul className="space-y-2.5">
+            {contact.addresses.map((a) => (
+              <li key={a.id} className="flex items-start gap-2 text-sm">
+                <LabelChip text={a.label} />
+                <span className="min-w-0 flex-1 leading-snug text-slate-800">
+                  {a.street && <span className="block">{a.street}</span>}
+                  <span className="block text-slate-500">
+                    {[a.city, a.state, a.postalCode].filter(Boolean).join(', ')}
+                    {a.country ? (a.city || a.state ? ' · ' : '') + a.country : ''}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {contact.dates.length > 0 && (
+        <section className="rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Important Dates
+          </h3>
+          <ul className="space-y-2">
+            {contact.dates.map((d) => {
+              const hint = dateHint(d.date);
+              return (
+                <li key={d.id} className="flex items-center gap-2 text-sm">
+                  <LabelChip text={d.label} />
+                  <span className="min-w-0 flex-1 truncate font-medium text-slate-800">
+                    {formatDate(d.date)}
+                    {hint && (
+                      <span className="ml-1.5 text-xs font-normal text-indigo-500">({hint})</span>
+                    )}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

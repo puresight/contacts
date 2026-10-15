@@ -80,7 +80,7 @@ export function PipelineView({
                         <Avatar name={c.name} />
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-medium text-slate-900">{c.name}</p>
-                          <p className="truncate text-xs text-slate-500">{c.company || c.email || '—'}</p>
+                          <p className="truncate text-xs text-slate-500">{c.company || c.emails[0]?.value || '—'}</p>
                         </div>
                         {c.value > 0 && (
                           <span className="shrink-0 text-sm font-semibold text-emerald-600">

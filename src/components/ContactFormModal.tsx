@@ -1,14 +1,24 @@
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import { STAGES } from '@/lib/stages';
-import { STAGE_STYLES } from '@/lib/stages';
+import { X, Mail, Phone, Globe, MapPin, CalendarDays } from 'lucide-react';
+import { STAGES, STAGE_STYLES } from '@/lib/stages';
 import type { Contact, Stage } from '@/db/database';
 import { FilledButton } from './ui';
+import {
+  SectionCard,
+  EmailsEditor,
+  PhonesEditor,
+  UrlsEditor,
+  AddressesEditor,
+  DatesEditor,
+} from './LabeledFieldEditors';
 
 export interface ContactDraft {
   name: string;
-  email: string;
-  phone: string;
+  emails: Contact['emails'];
+  phones: Contact['phones'];
+  urls: Contact['urls'];
+  addresses: Contact['addresses'];
+  dates: Contact['dates'];
   company: string;
   title: string;
   stage: Stage;
@@ -19,8 +29,11 @@ export interface ContactDraft {
 
 const EMPTY: ContactDraft = {
   name: '',
-  email: '',
-  phone: '',
+  emails: [],
+  phones: [],
+  urls: [],
+  addresses: [],
+  dates: [],
   company: '',
   title: '',
   stage: 'lead',
@@ -53,8 +66,11 @@ export function ContactFormModal({
     if (contact) {
       setDraft({
         name: contact.name,
-        email: contact.email,
-        phone: contact.phone,
+        emails: contact.emails.map((x) => ({ ...x })),
+        phones: contact.phones.map((x) => ({ ...x })),
+        urls: contact.urls.map((x) => ({ ...x })),
+        addresses: contact.addresses.map((x) => ({ ...x })),
+        dates: contact.dates.map((x) => ({ ...x })),
         company: contact.company,
         title: contact.title,
         stage: contact.stage,
@@ -83,7 +99,17 @@ export function ContactFormModal({
       setShowError(true);
       return;
     }
-    onSubmit({ ...draft, name: draft.name.trim() });
+    onSubmit({
+      ...draft,
+      name: draft.name.trim(),
+      emails: draft.emails.filter((e) => e.value.trim()),
+      phones: draft.phones.filter((p) => p.value.trim()),
+      urls: draft.urls.filter((u) => u.value.trim()),
+      addresses: draft.addresses.filter(
+        (a) => a.street.trim() || a.city.trim() || a.postalCode.trim(),
+      ),
+      dates: draft.dates.filter((d) => d.date),
+    });
   };
 
   return (
@@ -97,7 +123,7 @@ export function ContactFormModal({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"
           >
             <X className="h-5 w-5" />
           </button>
@@ -110,59 +136,37 @@ export function ContactFormModal({
             submit();
           }}
         >
-          <Field label="Name">
-            <input
-              autoFocus
-              value={draft.name}
-              onChange={(e) => set('name', e.target.value)}
-              placeholder="Jane Doe"
-              className={inputCls}
-            />
-            {showError && <p className="mt-1 text-xs text-rose-600">Name is required.</p>}
-          </Field>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field label="Email">
+          <SectionCard icon={X} title="Identity">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <input
-                type="email"
-                value={draft.email}
-                onChange={(e) => set('email', e.target.value)}
-                placeholder="jane@company.com"
+                autoFocus
+                value={draft.name}
+                onChange={(e) => set('name', e.target.value)}
+                placeholder="Full name"
                 className={inputCls}
               />
-            </Field>
-            <Field label="Phone">
-              <input
-                type="tel"
-                value={draft.phone}
-                onChange={(e) => set('phone', e.target.value)}
-                placeholder="+1 (555) 000-0000"
-                className={inputCls}
-              />
-            </Field>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field label="Company">
-              <input
-                value={draft.company}
-                onChange={(e) => set('company', e.target.value)}
-                placeholder="Acme Inc."
-                className={inputCls}
-              />
-            </Field>
-            <Field label="Job title">
               <input
                 value={draft.title}
                 onChange={(e) => set('title', e.target.value)}
-                placeholder="Product Manager"
+                placeholder="Job title"
                 className={inputCls}
               />
-            </Field>
-          </div>
-
-          <Field label="Stage">
-            <div className="flex flex-wrap gap-2">
+              <input
+                value={draft.company}
+                onChange={(e) => set('company', e.target.value)}
+                placeholder="Company"
+                className={inputCls}
+              />
+              <input
+                type="number"
+                min={0}
+                value={draft.value || ''}
+                onChange={(e) => set('value', Math.max(0, Number(e.target.value) || 0))}
+                placeholder="Deal value (USD)"
+                className={inputCls}
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
               {STAGES.map((s) => {
                 const active = draft.stage === s;
                 return (
@@ -187,22 +191,34 @@ export function ContactFormModal({
                 );
               })}
             </div>
-          </Field>
+          </SectionCard>
 
-          <Field label="Deal value (USD)">
-            <input
-              type="number"
-              min={0}
-              value={draft.value || ''}
-              onChange={(e) => set('value', Math.max(0, Number(e.target.value) || 0))}
-              placeholder="0"
-              className={inputCls}
+          <SectionCard icon={Mail} title="Emails">
+            <EmailsEditor emails={draft.emails} onChange={(emails) => set('emails', emails)} />
+          </SectionCard>
+
+          <SectionCard icon={Phone} title="Phones">
+            <PhonesEditor phones={draft.phones} onChange={(phones) => set('phones', phones)} />
+          </SectionCard>
+
+          <SectionCard icon={Globe} title="Links">
+            <UrlsEditor urls={draft.urls} onChange={(urls) => set('urls', urls)} />
+          </SectionCard>
+
+          <SectionCard icon={MapPin} title="Addresses">
+            <AddressesEditor
+              addresses={draft.addresses}
+              onChange={(addresses) => set('addresses', addresses)}
             />
-          </Field>
+          </SectionCard>
 
-          <Field label="Tags">
+          <SectionCard icon={CalendarDays} title="Important Dates">
+            <DatesEditor dates={draft.dates} onChange={(dates) => set('dates', dates)} />
+          </SectionCard>
+
+          <SectionCard icon={X} title="Tags & Notes">
             {draft.tags.length > 0 && (
-              <div className="mb-2 flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1.5">
                 {draft.tags.map((t) => (
                   <span
                     key={t}
@@ -234,9 +250,6 @@ export function ContactFormModal({
               placeholder="Type a tag and press Enter"
               className={inputCls}
             />
-          </Field>
-
-          <Field label="Notes">
             <textarea
               value={draft.notes}
               onChange={(e) => set('notes', e.target.value)}
@@ -244,12 +257,13 @@ export function ContactFormModal({
               placeholder="Anything worth remembering…"
               className={inputCls}
             />
-          </Field>
+          </SectionCard>
 
           <div className="sticky bottom-0 -mx-5 -mb-5 border-t border-slate-100 bg-white px-5 py-3">
             <FilledButton type="submit" className="w-full">
               {contact ? 'Save changes' : 'Create contact'}
             </FilledButton>
+            {showError && <p className="mt-2 text-center text-xs text-rose-600">Name is required.</p>}
           </div>
         </form>
       </div>
@@ -259,12 +273,3 @@ export function ContactFormModal({
 
 const inputCls =
   'w-full rounded-xl border-0 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500';
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-slate-700">{label}</span>
-      {children}
-    </label>
-  );
-}

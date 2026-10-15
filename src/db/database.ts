@@ -2,6 +2,46 @@ import Dexie, { type Table } from 'dexie';
 
 export type Stage = 'lead' | 'prospect' | 'active' | 'personal';
 
+export type EmailLabel = 'work' | 'home' | 'other';
+export type PhoneLabel = 'mobile' | 'work' | 'home' | 'other';
+export type UrlLabel = 'work' | 'website' | 'portfolio' | 'payment' | 'other';
+export type AddressLabel = 'home' | 'work' | 'shipping' | 'other';
+export type DateLabel = 'birthday' | 'anniversary' | 'death' | 'transaction' | 'other';
+
+export interface LabeledEmail {
+  id: string;
+  label: EmailLabel;
+  value: string;
+}
+
+export interface LabeledPhone {
+  id: string;
+  label: PhoneLabel;
+  value: string;
+}
+
+export interface LabeledUrl {
+  id: string;
+  label: UrlLabel;
+  value: string;
+}
+
+export interface LabeledAddress {
+  id: string;
+  label: AddressLabel;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface LabeledDate {
+  id: string;
+  label: DateLabel;
+  date: string;
+}
+
 export interface Workspace {
   id: string;
   name: string;
@@ -16,8 +56,11 @@ export interface Contact {
   id: string;
   workspaceId: string;
   name: string;
-  email: string;
-  phone: string;
+  emails: LabeledEmail[];
+  phones: LabeledPhone[];
+  urls: LabeledUrl[];
+  addresses: LabeledAddress[];
+  dates: LabeledDate[];
   company: string;
   title: string;
   stage: Stage;
@@ -71,6 +114,34 @@ export class CrmDatabase extends Dexie {
       interactions: 'id, contactId, kind, occurredAt, isDeleted',
       entityLinks: 'id, contactId, kind, isDeleted',
     });
+    this.version(2)
+      .stores({
+        contacts: 'id, workspaceId, name, company, stage, updatedAt, isDeleted',
+      })
+      .upgrade((tx) => {
+        return tx
+          .table('contacts')
+          .toCollection()
+          .modify((rec: Record<string, unknown>) => {
+            const legacy = rec as {
+              email?: string;
+              phone?: string;
+            };
+            if (!Array.isArray(rec.emails)) {
+              rec.emails = legacy.email
+                ? [{ id: uuid(), label: 'other', value: legacy.email }]
+                : [];
+            }
+            if (!Array.isArray(rec.phones)) {
+              rec.phones = legacy.phone
+                ? [{ id: uuid(), label: 'mobile', value: legacy.phone }]
+                : [];
+            }
+            if (!Array.isArray(rec.urls)) rec.urls = [];
+            if (!Array.isArray(rec.addresses)) rec.addresses = [];
+            if (!Array.isArray(rec.dates)) rec.dates = [];
+          });
+      });
   }
 }
 
@@ -111,8 +182,27 @@ export async function ensureSeeded(): Promise<void> {
       id: contactIds[0],
       workspaceId,
       name: 'Maya Chen',
-      email: 'maya.chen@brightloop.io',
-      phone: '+1 (415) 555-0142',
+      emails: [
+        { id: uuid(), label: 'work', value: 'maya.chen@brightloop.io' },
+        { id: uuid(), label: 'other', value: 'maya.personal@gmail.com' },
+      ],
+      phones: [
+        { id: uuid(), label: 'mobile', value: '+1 (415) 555-0142' },
+        { id: uuid(), label: 'work', value: '+1 (415) 555-0199' },
+      ],
+      urls: [{ id: uuid(), label: 'website', value: 'https://brightloop.io' }],
+      addresses: [
+        {
+          id: uuid(),
+          label: 'work',
+          street: '500 Howard St',
+          city: 'San Francisco',
+          state: 'CA',
+          postalCode: '94105',
+          country: 'USA',
+        },
+      ],
+      dates: [{ id: uuid(), label: 'birthday', date: '1990-10-24' }],
       company: 'Brightloop',
       title: 'Head of Partnerships',
       stage: 'active',
@@ -128,8 +218,11 @@ export async function ensureSeeded(): Promise<void> {
       id: contactIds[1],
       workspaceId,
       name: 'Daniel Okafor',
-      email: 'd.okafor@northbeam.com',
-      phone: '+1 (512) 555-0198',
+      emails: [{ id: uuid(), label: 'work', value: 'd.okafor@northbeam.com' }],
+      phones: [{ id: uuid(), label: 'mobile', value: '+1 (512) 555-0198' }],
+      urls: [],
+      addresses: [],
+      dates: [],
       company: 'Northbeam',
       title: 'Product Director',
       stage: 'prospect',
@@ -145,13 +238,16 @@ export async function ensureSeeded(): Promise<void> {
       id: contactIds[2],
       workspaceId,
       name: 'Sofia Reyes',
-      email: 'sofia.reyes@gmail.com',
-      phone: '+1 (312) 555-0117',
+      emails: [{ id: uuid(), label: 'home', value: 'sofia.reyes@gmail.com' }],
+      phones: [{ id: uuid(), label: 'mobile', value: '+1 (312) 555-0117' }],
+      urls: [],
+      addresses: [],
+      dates: [{ id: uuid(), label: 'birthday', date: '1987-03-12' }],
       company: '',
       title: '',
       stage: 'personal',
       tags: ['friend'],
-      notes: 'Birthday in March. No work topics.',
+      notes: 'No work topics.',
       value: 0,
       createdAt: now(),
       updatedAt: now(),
@@ -221,8 +317,11 @@ export function newContact(partial: Partial<Contact> & { workspaceId: string }):
   return {
     id: uuid(),
     name: '',
-    email: '',
-    phone: '',
+    emails: [],
+    phones: [],
+    urls: [],
+    addresses: [],
+    dates: [],
     company: '',
     title: '',
     stage: 'lead',

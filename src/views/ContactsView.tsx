@@ -23,11 +23,15 @@ export function ContactsView({
       .filter((c) => (stage === 'all' ? true : c.stage === stage))
       .filter((c) => {
         if (!q) return true;
-        return (
-          c.name.toLowerCase().includes(q) ||
-          c.email.toLowerCase().includes(q) ||
-          c.company.toLowerCase().includes(q)
-        );
+        const haystack = [
+          c.name,
+          c.company,
+          ...c.emails.map((e) => e.value),
+          ...c.phones.map((p) => p.value),
+        ]
+          .join(' ')
+          .toLowerCase();
+        return haystack.includes(q);
       })
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [contacts, query, stage]);
@@ -74,11 +78,11 @@ export function ContactsView({
                 }}
                 className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70 transition hover:bg-slate-50 active:bg-slate-100"
               >
-                <Avatar name={c.name} email={c.email} />
+                <Avatar name={c.name} email={c.emails[0]?.value} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-slate-900">{c.name}</p>
                   <p className="truncate text-sm text-slate-500">
-                    {c.company || c.email || 'No details'}
+                    {c.company || c.emails[0]?.value || 'No details'}
                   </p>
                   <div className="mt-1.5">
                     <StageBadgeInline stage={c.stage} />
@@ -93,9 +97,9 @@ export function ContactsView({
                     label={`Call ${c.name}`}
                     tone="green"
                     onClick={
-                      c.phone
+                      c.phones[0]?.value
                         ? () => {
-                            window.location.href = `tel:${c.phone}`;
+                            window.location.href = `tel:${c.phones[0]!.value}`;
                           }
                         : () => {}
                     }
@@ -105,9 +109,9 @@ export function ContactsView({
                     label={`Email ${c.name}`}
                     tone="indigo"
                     onClick={
-                      c.email
+                      c.emails[0]?.value
                         ? () => {
-                            window.location.href = `mailto:${c.email}`;
+                            window.location.href = `mailto:${c.emails[0]!.value}`;
                           }
                         : () => {}
                     }

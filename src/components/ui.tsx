@@ -1,4 +1,4 @@
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, X } from 'lucide-react';
 import { STAGE_STYLES } from '@/lib/stages';
 import type { Stage } from '@/db/database';
 
@@ -61,9 +61,9 @@ export function SearchInput({
         <button
           onClick={() => onChange('')}
           aria-label="Clear search"
-          className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 hover:bg-slate-200"
+          className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-200 active:bg-slate-300"
         >
-          <Search className="h-4 w-4 rotate-45" />
+          <X className="h-4 w-4" />
         </button>
       )}
     </div>
