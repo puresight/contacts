@@ -52,7 +52,10 @@ export function AppShell() {
     undefined,
   );
   const links = useLiveQuery(() => db.entityLinks.filter((l) => !l.isDeleted).toArray(), [], undefined);
-  const workspace = useLiveQuery(() => db.workspaces.orderBy('createdAt').first(), [], undefined);
+  const workspace = useLiveQuery(async () => {
+    const all = await db.workspaces.filter((w) => !w.isDeleted).toArray();
+    return all.sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0] ?? null;
+  }, [], undefined);
 
   const selected = useMemo(
     () => contacts?.find((c) => c.id === selectedId) ?? null,
