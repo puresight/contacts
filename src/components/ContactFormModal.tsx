@@ -32,11 +32,13 @@ const EMPTY: ContactDraft = {
 export function ContactFormModal({
   open,
   contact,
+  prefillName,
   onClose,
   onSubmit,
 }: {
   open: boolean;
   contact?: Contact | null;
+  prefillName?: string | null;
   onClose: () => void;
   onSubmit: (draft: ContactDraft) => void;
 }) {
@@ -61,9 +63,9 @@ export function ContactFormModal({
         value: contact.value,
       });
     } else {
-      setDraft(EMPTY);
+      setDraft(prefillName ? { ...EMPTY, name: prefillName } : EMPTY);
     }
-  }, [open, contact]);
+  }, [open, contact, prefillName]);
 
   if (!open) return null;
 
@@ -161,20 +163,29 @@ export function ContactFormModal({
 
           <Field label="Stage">
             <div className="flex flex-wrap gap-2">
-              {STAGES.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => set('stage', s)}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
-                    draft.stage === s
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  {STAGE_STYLES[s].label}
-                </button>
-              ))}
+              {STAGES.map((s) => {
+                const active = draft.stage === s;
+                return (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => set('stage', s)}
+                    aria-pressed={active}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition ${
+                      active
+                        ? 'bg-indigo-600 text-white'
+                        : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 active:bg-indigo-200'
+                    }`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${
+                        active ? 'bg-white' : STAGE_STYLES[s].dot
+                      }`}
+                    />
+                    {STAGE_STYLES[s].label}
+                  </button>
+                );
+              })}
             </div>
           </Field>
 

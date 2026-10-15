@@ -3,7 +3,7 @@ import { Phone, Mail, UserPlus, Users } from 'lucide-react';
 import type { Contact, Stage } from '@/db/database';
 import { STAGE_STYLES } from '@/lib/stages';
 import { StagePills, SearchInput, EmptyState, IconActionButton } from '@/components/ui';
-import { Avatar } from '@/components/ContactDetailPane';
+import { Avatar } from '@/components/Avatar';
 
 export function ContactsView({
   contacts,
@@ -12,7 +12,7 @@ export function ContactsView({
 }: {
   contacts: Contact[];
   onSelect: (id: string) => void;
-  onNew: () => void;
+  onNew: (prefillName?: string) => void;
 }) {
   const [query, setQuery] = useState('');
   const [stage, setStage] = useState<Stage | 'all'>('all');
@@ -32,6 +32,8 @@ export function ContactsView({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [contacts, query, stage]);
 
+  const q = query.trim();
+
   return (
     <div className="space-y-4">
       <SearchInput value={query} onChange={setQuery} />
@@ -43,13 +45,20 @@ export function ContactsView({
             icon={Users}
             title="No contacts yet"
             hint="Add your first contact to start tracking calls, emails, and deals."
-            action={{ label: 'Add contact', onClick: onNew, icon: UserPlus }}
+            action={{ label: 'Add contact', onClick: () => onNew(), icon: UserPlus }}
+          />
+        ) : q ? (
+          <EmptyState
+            icon={Users}
+            title={`No contacts found for "${q}"`}
+            hint="Nothing matches your search. You can create a contact from this name."
+            action={{ label: `Create contact "${q}"`, onClick: () => onNew(q), icon: UserPlus }}
           />
         ) : (
           <EmptyState
             icon={Users}
             title="No matches"
-            hint="Try a different search term or stage filter."
+            hint="Try a different stage filter."
           />
         )
       ) : (
@@ -63,13 +72,11 @@ export function ContactsView({
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') onSelect(c.id);
                 }}
-                className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-slate-200 transition hover:ring-indigo-300 hover:shadow-sm active:ring-indigo-400"
+                className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70 transition hover:bg-slate-50 active:bg-slate-100"
               >
-                <Avatar name={c.name} />
+                <Avatar name={c.name} email={c.email} />
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="truncate font-medium text-slate-900">{c.name}</p>
-                  </div>
+                  <p className="truncate font-medium text-slate-900">{c.name}</p>
                   <p className="truncate text-sm text-slate-500">
                     {c.company || c.email || 'No details'}
                   </p>

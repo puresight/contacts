@@ -18,9 +18,10 @@ import {
 import type { Contact, EntityLink, Interaction, InteractionKind } from '@/db/database';
 import { newEntityLink, newInteraction } from '@/db/database';
 import { db } from '@/db/database';
-import { STAGE_STYLES, formatMoney, initials, relativeTime } from '@/lib/stages';
+import { STAGE_STYLES, formatMoney, relativeTime } from '@/lib/stages';
 import { StageBadge } from './ui';
 import { InteractionComposer } from './InteractionComposer';
+import { Avatar } from './Avatar';
 
 const KIND_ICON: Record<InteractionKind, React.ComponentType<{ className?: string }>> = {
   note: MessageSquare,
@@ -93,7 +94,7 @@ export function ContactDetailPane({
           >
             <X className="h-5 w-5" />
           </button>
-          <Avatar name={contact.name} size="md" />
+          <Avatar name={contact.name} email={contact.email} size="md" />
           <div className="min-w-0">
             <h2 className="truncate font-semibold text-slate-900">{contact.name}</h2>
             <p className="truncate text-sm text-slate-500">
@@ -312,17 +313,6 @@ function Row({
       <Icon className="h-4 w-4 shrink-0 text-slate-400" />
       <dt className="shrink-0 text-slate-500">{label}</dt>
       <dd className="min-w-0 flex-1 truncate text-right font-medium text-slate-800">{value}</dd>
-    </div>
-  );
-}
-
-export function Avatar({ name, size = 'md' }: { name: string; size?: 'md' | 'lg' }) {
-  const cls = size === 'lg' ? 'h-12 w-12 text-base' : 'h-10 w-10 text-sm';
-  return (
-    <div
-      className={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 font-semibold text-white ${cls}`}
-    >
-      {initials(name)}
     </div>
   );
 }

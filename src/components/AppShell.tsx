@@ -17,8 +17,9 @@ import { ActivityView } from '@/views/ActivityView';
 import { SettingsView } from '@/views/SettingsView';
 import { ContactFormModal, type ContactDraft } from '@/components/ContactFormModal';
 import { ContactDetailPane } from '@/components/ContactDetailPane';
-import { FabPlus } from '@/components/ui';
+import { FabPlus, TonalButton } from '@/components/ui';
 import { newContact } from '@/db/database';
+import { UserPlus } from 'lucide-react';
 
 type Tab = 'contacts' | 'pipeline' | 'activity' | 'settings';
 
@@ -42,6 +43,7 @@ export function AppShell() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
+  const [prefillName, setPrefillName] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
 
@@ -67,8 +69,9 @@ export function AppShell() {
     setMobileDetailOpen(true);
   };
 
-  const openNewForm = () => {
+  const openNewForm = (prefill?: string) => {
     setEditing(null);
+    setPrefillName(prefill?.trim() ? prefill.trim() : null);
     setFormOpen(true);
   };
 
@@ -146,7 +149,7 @@ export function AppShell() {
         }`}
       >
         <div className="flex items-center gap-2.5 px-4 py-5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 text-white">
             <HardDrive className="h-5 w-5" />
           </div>
           {!sidebarCollapsed && (
@@ -156,6 +159,25 @@ export function AppShell() {
             </div>
           )}
         </div>
+        {!sidebarCollapsed && (
+          <div className="px-3 pb-2">
+            <TonalButton onClick={() => openNewForm()} className="w-full !justify-start">
+              <UserPlus className="h-4 w-4" /> New Contact
+            </TonalButton>
+          </div>
+        )}
+        {sidebarCollapsed && (
+          <div className="px-3 pb-2">
+            <button
+              onClick={() => openNewForm()}
+              title="New Contact"
+              aria-label="New Contact"
+              className="flex h-11 w-full items-center justify-center rounded-full bg-indigo-100 text-indigo-700 transition hover:bg-indigo-200 active:bg-indigo-300"
+            >
+              <UserPlus className="h-5 w-5" />
+            </button>
+          </div>
+        )}
         <nav className="flex-1 space-y-1 px-3">
           {TABS.map((t) => (
             <button
@@ -204,9 +226,15 @@ export function AppShell() {
             >
               <Menu className="h-5 w-5" />
             </button>
-            <h1 className="text-lg font-semibold capitalize md:text-xl">
+            <h1 className="flex-1 text-lg font-semibold capitalize md:text-xl">
               {TABS.find((t) => t.id === tab)?.label}
             </h1>
+            <TonalButton
+              onClick={() => openNewForm()}
+              className="!hidden md:!inline-flex !py-2"
+            >
+              <UserPlus className="h-4 w-4" /> New Contact
+            </TonalButton>
           </div>
         </header>
 
@@ -283,9 +311,11 @@ export function AppShell() {
       <ContactFormModal
         open={formOpen}
         contact={editing ? contacts.find((c) => c.id === editing) ?? null : null}
+        prefillName={prefillName}
         onClose={() => {
           setFormOpen(false);
           setEditing(null);
+          setPrefillName(null);
         }}
         onSubmit={submitForm}
       />

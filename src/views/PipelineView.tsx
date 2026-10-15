@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import type { Contact } from '@/db/database';
 import { STAGES, STAGE_STYLES, formatMoney } from '@/lib/stages';
 import { EmptyState } from '@/components/ui';
-import { Avatar } from '@/components/ContactDetailPane';
+import { Avatar } from '@/components/Avatar';
 import { LayoutGrid } from 'lucide-react';
 
 export function PipelineView({
