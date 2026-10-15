@@ -29,7 +29,7 @@ export function StagePills({
           className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
             value === opt
               ? 'bg-indigo-600 text-white shadow-none'
-              : 'bg-slate-100 text-slate-600 hover:bg-slate-200 active:bg-slate-300'
+              : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700 dark:hover:bg-slate-700 dark:active:bg-slate-600'
           }`}
         >
           {opt === 'all' ? 'All' : STAGE_STYLES[opt].label}
@@ -50,18 +50,18 @@ export function SearchInput({
 }) {
   return (
     <div className="relative">
-      <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+      <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder ?? 'Search contacts…'}
-        className="w-full rounded-full border-0 bg-slate-100 py-3 pl-11 pr-11 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full rounded-full border-0 bg-white py-3 pl-11 pr-11 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-slate-100 dark:ring-slate-700 dark:placeholder:text-slate-500"
       />
       {value && (
         <button
           onClick={() => onChange('')}
           aria-label="Clear search"
-          className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-200 active:bg-slate-300"
+          className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-200 active:bg-slate-300 dark:text-slate-400 dark:hover:bg-slate-700"
         >
           <X className="h-4 w-4" />
         </button>
@@ -91,12 +91,12 @@ export function EmptyState({
   action?: { label: string; onClick: () => void; icon?: React.ComponentType<{ className?: string }> };
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-100/70 px-6 py-12 text-center">
-      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white">
-        <Icon className="h-6 w-6 text-slate-400" />
+    <div className="flex flex-col items-center justify-center rounded-2xl bg-white/70 px-6 py-12 text-center ring-1 ring-slate-200/60 dark:bg-slate-900/60 dark:ring-slate-800">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+        <Icon className="h-6 w-6 text-slate-400 dark:text-slate-500" />
       </div>
-      <p className="font-medium text-slate-700">{title}</p>
-      {hint && <p className="mt-1 max-w-xs text-sm text-slate-500">{hint}</p>}
+      <p className="font-medium text-slate-700 dark:text-slate-200">{title}</p>
+      {hint && <p className="mt-1 max-w-xs text-sm text-slate-500 dark:text-slate-400">{hint}</p>}
       {action && (
         <button
           onClick={action.onClick}
@@ -145,7 +145,7 @@ export function TonalButton({
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo-100 px-4 py-2.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-200 active:bg-indigo-300 ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo-100 px-4 py-2.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-200 active:bg-indigo-300 dark:bg-indigo-400/20 dark:text-indigo-300 dark:hover:bg-indigo-400/30 dark:active:bg-indigo-400/40 ${className}`}
     >
       {children}
     </button>
@@ -165,7 +165,7 @@ export function GhostButton({
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full bg-slate-100 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 active:bg-slate-300 ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 rounded-full bg-slate-100 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:active:bg-slate-600 ${className}`}
     >
       {children}
     </button>
@@ -184,9 +184,9 @@ export function IconActionButton({
   tone?: 'default' | 'green' | 'indigo';
 }) {
   const tones = {
-    default: 'text-slate-600 hover:bg-slate-100 active:bg-slate-200',
-    green: 'text-emerald-600 hover:bg-emerald-50 active:bg-emerald-100',
-    indigo: 'text-indigo-600 hover:bg-indigo-50 active:bg-indigo-100',
+    default: 'text-slate-600 hover:bg-slate-100 active:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-800',
+    green: 'text-emerald-600 hover:bg-emerald-50 active:bg-emerald-100 dark:text-emerald-400 dark:hover:bg-emerald-950/50',
+    indigo: 'text-indigo-600 hover:bg-indigo-50 active:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-950/50',
   };
   return (
     <button
@@ -206,7 +206,7 @@ export function FabPlus({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       aria-label="New contact"
-      className="fixed bottom-20 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 active:scale-95 active:bg-indigo-700 md:hidden"
+      className="fixed bottom-20 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 active:scale-95 active:bg-indigo-700 md:hidden dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:active:bg-indigo-600"
     >
       <Plus className="h-6 w-6" />
     </button>

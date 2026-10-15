@@ -76,7 +76,7 @@ export function ContactsView({
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') onSelect(c.id);
                 }}
-                className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70 transition hover:bg-slate-50 active:bg-slate-100"
+                className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-slate-200/70 transition hover:bg-slate-50 active:bg-slate-100 dark:bg-slate-900 dark:ring-slate-800 dark:hover:bg-slate-800 dark:active:bg-slate-700"
               >
                 <Avatar name={c.name} email={c.emails[0]?.value} />
                 <div className="min-w-0 flex-1">

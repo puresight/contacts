@@ -9,10 +9,10 @@ const PRESETS: Array<{
   icon: React.ComponentType<{ className?: string }>;
   tone: string;
 }> = [
-  { kind: 'note', label: 'Note', icon: MessageSquare, tone: 'text-slate-600 bg-slate-100' },
-  { kind: 'call', label: 'Call', icon: Phone, tone: 'text-emerald-600 bg-emerald-50' },
-  { kind: 'email', label: 'Email', icon: Mail, tone: 'text-indigo-600 bg-indigo-50' },
-  { kind: 'meeting', label: 'Meeting', icon: CalendarDays, tone: 'text-amber-600 bg-amber-50' },
+  { kind: 'note', label: 'Note', icon: MessageSquare, tone: 'text-slate-600 bg-slate-100 dark:text-slate-300 dark:bg-slate-800' },
+  { kind: 'call', label: 'Call', icon: Phone, tone: 'text-emerald-600 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-950/60' },
+  { kind: 'email', label: 'Email', icon: Mail, tone: 'text-indigo-600 bg-indigo-50 dark:text-indigo-300 dark:bg-indigo-950/60' },
+  { kind: 'meeting', label: 'Meeting', icon: CalendarDays, tone: 'text-amber-600 bg-amber-50 dark:text-amber-300 dark:bg-amber-950/60' },
 ];
 
 export function InteractionComposer({
@@ -32,7 +32,7 @@ export function InteractionComposer({
   };
 
   return (
-    <div className="rounded-2xl bg-slate-50 p-3 ring-1 ring-slate-200">
+    <div className="rounded-2xl bg-slate-50 p-3 ring-1 ring-slate-200 dark:bg-slate-800/60 dark:ring-slate-700">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {PRESETS.map((p) => (
@@ -66,7 +66,7 @@ export function InteractionComposer({
         }}
         rows={2}
         placeholder="What happened?"
-        className="w-full resize-none rounded-xl border-0 bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full resize-none rounded-xl border-0 bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-900 dark:text-slate-100 dark:ring-slate-700 dark:placeholder:text-slate-500"
       />
       <div className="mt-2 flex justify-end">
         <FilledButton onClick={submit} className="!py-2 !px-3 text-xs">

@@ -33,7 +33,7 @@ export function Avatar({
         src={`https://unavatar.io/${encodeURIComponent(email)}?fallback=false`}
         alt=""
         onError={() => setFailed(true)}
-        className={`${cls} shrink-0 rounded-full bg-slate-100 object-cover`}
+        className={`${cls} shrink-0 rounded-full bg-slate-100 object-cover dark:bg-slate-800`}
       />
     );
   }

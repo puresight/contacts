@@ -114,8 +114,8 @@ export function ContactFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center">
-      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-3xl bg-white p-5 shadow-2xl md:max-w-lg md:rounded-3xl">
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60" onClick={onClose} />
+      <div className="relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-3xl bg-white p-5 shadow-2xl md:max-w-lg md:rounded-3xl dark:bg-slate-900">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-900">
             {contact ? 'Edit contact' : 'New contact'}
@@ -123,7 +123,7 @@ export function ContactFormModal({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
           >
             <X className="h-5 w-5" />
           </button>
@@ -259,11 +259,11 @@ export function ContactFormModal({
             />
           </SectionCard>
 
-          <div className="sticky bottom-0 -mx-5 -mb-5 border-t border-slate-100 bg-white px-5 py-3">
+          <div className="sticky bottom-0 -mx-5 -mb-5 border-t border-slate-100 bg-white px-5 py-3 dark:border-slate-800 dark:bg-slate-900">
             <FilledButton type="submit" className="w-full">
               {contact ? 'Save changes' : 'Create contact'}
             </FilledButton>
-            {showError && <p className="mt-2 text-center text-xs text-rose-600">Name is required.</p>}
+            {showError && <p className="mt-2 text-center text-xs text-rose-600 dark:text-rose-400">Name is required.</p>}
           </div>
         </form>
       </div>
@@ -272,4 +272,4 @@ export function ContactFormModal({
 }
 
 const inputCls =
-  'w-full rounded-xl border-0 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500';
+  'w-full rounded-xl border-0 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:placeholder:text-slate-500';

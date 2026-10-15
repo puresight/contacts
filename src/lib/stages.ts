@@ -5,22 +5,26 @@ export const STAGES: Stage[] = ['lead', 'prospect', 'active', 'personal'];
 export const STAGE_STYLES: Record<Stage, { label: string; badge: string; dot: string }> = {
   lead: {
     label: 'Lead',
-    badge: 'bg-slate-100 text-slate-700 ring-1 ring-slate-200',
+    badge:
+      'bg-slate-100 text-slate-700 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700',
     dot: 'bg-slate-400',
   },
   prospect: {
     label: 'Prospect',
-    badge: 'bg-amber-50 text-amber-700 ring-1 ring-amber-200',
+    badge:
+      'bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:ring-amber-900',
     dot: 'bg-amber-500',
   },
   active: {
     label: 'Active',
-    badge: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200',
+    badge:
+      'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:ring-emerald-900',
     dot: 'bg-emerald-500',
   },
   personal: {
     label: 'Personal',
-    badge: 'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200',
+    badge:
+      'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:ring-indigo-900',
     dot: 'bg-indigo-500',
   },
 };

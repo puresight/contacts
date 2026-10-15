@@ -49,30 +49,30 @@ export function ActivityView({
   }
 
   return (
-    <ol className="relative space-y-4 border-l-2 border-slate-100 pl-4 ml-2">
+    <ol className="relative space-y-4 border-l-2 border-slate-100 pl-4 ml-2 dark:border-slate-800">
       {sorted.map((it) => {
         const Icon = KIND_ICON[it.kind];
         return (
           <li key={it.id} className="relative">
             <span
-              className={`absolute -left-[26px] flex h-7 w-7 items-center justify-center rounded-full ring-4 ring-slate-50 ${KIND_TONE[it.kind]}`}
+              className={`absolute -left-[26px] flex h-7 w-7 items-center justify-center rounded-full ring-4 ring-slate-50 dark:ring-slate-950 ${KIND_TONE[it.kind]}`}
             >
               <Icon className="h-3.5 w-3.5" />
             </span>
             <button
               onClick={() => onSelect(it.contactId)}
-              className="w-full rounded-2xl bg-white p-3.5 text-left ring-1 ring-slate-200 transition hover:ring-indigo-300 hover:shadow-sm active:ring-indigo-400"
+              className="w-full rounded-2xl bg-white p-3.5 text-left ring-1 ring-slate-200 transition hover:ring-indigo-300 hover:shadow-sm active:ring-indigo-400 dark:bg-slate-900 dark:ring-slate-800 dark:hover:ring-indigo-800"
             >
               <div className="flex items-baseline justify-between gap-2">
-                <p className="truncate text-sm font-medium text-slate-900">
+                <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
                   {contactName.get(it.contactId) ?? 'Unknown contact'}
                 </p>
-                <span className="shrink-0 text-xs text-slate-400">{relativeTime(it.occurredAt)}</span>
+                <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">{relativeTime(it.occurredAt)}</span>
               </div>
-              <span className="mt-0.5 block text-xs font-medium capitalize text-indigo-600">
+              <span className="mt-0.5 block text-xs font-medium capitalize text-indigo-600 dark:text-indigo-400">
                 {it.kind}
               </span>
-              <p className="mt-1 text-sm leading-relaxed text-slate-600">{it.summary}</p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{it.summary}</p>
             </button>
           </li>
         );

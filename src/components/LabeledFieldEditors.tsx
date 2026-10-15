@@ -15,10 +15,10 @@ export const ADDRESS_LABELS = ['home', 'work', 'shipping', 'other'] as const;
 export const DATE_LABELS = ['birthday', 'anniversary', 'death', 'transaction', 'other'] as const;
 
 const inputCls =
-  'w-full min-w-0 rounded-xl border-0 bg-slate-50 px-3 py-2 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500';
+  'w-full min-w-0 rounded-xl border-0 bg-slate-50 px-3 py-2 text-sm text-slate-900 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:placeholder:text-slate-500';
 
 const selectCls =
-  'shrink-0 appearance-none rounded-full border-0 bg-indigo-50 py-2 pl-3 pr-8 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%234f46e5%27 stroke-width=%272%27%3E%3Cpath d=%27m6 9 6 6 6-6%27/%3E%3C/svg%3E")] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat';
+  'shrink-0 appearance-none rounded-full border-0 bg-indigo-50 py-2 pl-3 pr-8 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-indigo-950/60 dark:text-indigo-300 dark:ring-indigo-900 bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%234f46e5%27 stroke-width=%272%27%3E%3Cpath d=%27m6 9 6 6 6-6%27/%3E%3C/svg%3E")] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat';
 
 function Row({
   children,
@@ -34,7 +34,7 @@ function Row({
         type="button"
         onClick={onRemove}
         aria-label="Remove entry"
-        className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 active:bg-rose-100"
+        className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 active:bg-rose-100 dark:hover:bg-rose-950/60 dark:hover:text-rose-400"
       >
         <Trash2 className="h-4 w-4" />
       </button>
@@ -72,7 +72,7 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100 active:bg-indigo-200"
+      className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100 active:bg-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:hover:bg-indigo-900/60 dark:active:bg-indigo-900"
     >
       <Plus className="h-3.5 w-3.5" /> {label}
     </button>
@@ -81,8 +81,8 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
 
 function EmptyHint({ text, children }: { text: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 ring-1 ring-slate-100">
-      <span className="text-xs text-slate-400">{text}</span>
+    <div className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 ring-1 ring-slate-100 dark:bg-slate-800/60 dark:ring-slate-700">
+      <span className="text-xs text-slate-400 dark:text-slate-500">{text}</span>
       {children}
     </div>
   );
@@ -98,8 +98,8 @@ export function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70">
-      <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-800">
+    <section className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-slate-800">
+      <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-200">
         <Icon className="h-4 w-4 text-indigo-500" />
         {title}
       </h3>
