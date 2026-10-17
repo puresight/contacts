@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { HardDrive, Database, Info, Download, Trash2, ShieldCheck, Sun } from 'lucide-react';
+import { HardDrive, Database, Info, Download, Trash2, ShieldCheck, Sun, Monitor, Moon } from 'lucide-react';
 import { db } from '@/db/database';
 import { FilledButton, GhostButton } from '@/components/ui';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { useTheme, type ThemeMode } from '@/context/ThemeContext';
 
 export function SettingsView({
   workspaceName,
@@ -76,7 +76,7 @@ export function SettingsView({
           Choose light, dark, or follow your device setting. "System" updates automatically when your OS
           switches theme.
         </p>
-        <ThemeToggle />
+        <AppearanceOptions />
       </div>
 
       <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
@@ -138,6 +138,35 @@ export function SettingsView({
           {message}
         </div>
       )}
+    </div>
+  );
+}
+
+function AppearanceOptions() {
+  const { mode, setMode } = useTheme();
+  const options: { id: ThemeMode; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { id: 'light', label: 'Light', icon: Sun },
+    { id: 'dark', label: 'Dark', icon: Moon },
+    { id: 'system', label: 'System', icon: Monitor },
+  ];
+  return (
+    <div role="radiogroup" aria-label="Theme" className="grid max-w-xs grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
+      {options.map(({ id, label, icon: Icon }) => (
+        <button
+          key={id}
+          role="radio"
+          aria-checked={mode === id}
+          onClick={() => setMode(id)}
+          className={`flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg text-sm font-medium transition-colors ${
+            mode === id
+              ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100'
+              : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100'
+          }`}
+        >
+          <Icon className="h-4 w-4" />
+          {label}
+        </button>
+      ))}
     </div>
   );
 }

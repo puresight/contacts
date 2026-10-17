@@ -1,5 +1,10 @@
 import { AppShell } from '@/components/AppShell';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 export default function App() {
-  return <AppShell />;
+  return (
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  );
 }

@@ -1,5 +1,5 @@
 import { Monitor, Moon, Sun } from 'lucide-react';
-import { useTheme, type ThemeMode } from '@/hooks/useTheme';
+import { useTheme, type ThemeMode } from '@/context/ThemeContext';
 
 const ORDER: ThemeMode[] = ['system', 'light', 'dark'];
 
@@ -10,13 +10,13 @@ const META: Record<ThemeMode, { label: string; icon: React.ComponentType<{ class
 };
 
 export function ThemeToggle({ className = '' }: { className?: string }) {
-  const { mode, setMode } = useTheme();
+  const { mode, cycleMode } = useTheme();
   const next = ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length];
   const { label, icon: Icon } = META[mode];
 
   return (
     <button
-      onClick={() => setMode(next)}
+      onClick={cycleMode}
       aria-label={`Theme: ${label} (click for ${META[next].label})`}
       title={`Theme: ${label} (click for ${META[next].label})`}
       className={`flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors ${className}`}

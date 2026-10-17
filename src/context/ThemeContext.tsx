@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
@@ -18,7 +18,11 @@ function media(): MediaQueryList {
   return window.matchMedia('(prefers-color-scheme: dark)');
 }
 
-export function useTheme() {
+const ThemeContext = createContext<{ mode: ThemeMode; setMode: (m: ThemeMode) => void; cycleMode: () => void } | null>(null);
+
+const ORDER: ThemeMode[] = ['system', 'light', 'dark'];
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>(readStored);
   const [systemDark, setSystemDark] = useState(() => media().matches);
 
@@ -40,6 +44,15 @@ export function useTheme() {
   }, [mode, systemDark]);
 
   const setMode = useCallback((m: ThemeMode) => setModeState(m), []);
+  const cycleMode = useCallback(() => {
+    setModeState((prev) => ORDER[(ORDER.indexOf(prev) + 1) % ORDER.length]);
+  }, []);
 
-  return { mode, setMode };
+  return <ThemeContext.Provider value={{ mode, setMode, cycleMode }}>{children}</ThemeContext.Provider>;
+}
+
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used within a ThemeProvider');
+  return ctx;
 }
