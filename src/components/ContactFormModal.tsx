@@ -115,7 +115,7 @@ export function ContactFormModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center">
       <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60" onClick={onClose} />
-      <div className="relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-3xl bg-white p-5 shadow-2xl md:max-w-lg md:rounded-3xl dark:bg-slate-900">
+      <div className="relative z-10 h-full max-h-full w-full overflow-y-auto bg-white p-5 pb-[max(env(safe-area-inset-bottom),1.25rem)] shadow-2xl md:h-auto md:max-h-[92vh] md:max-w-lg md:rounded-3xl md:pb-5 dark:bg-slate-900">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             {contact ? 'Edit contact' : 'New contact'}
