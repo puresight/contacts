@@ -82,7 +82,7 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
 function EmptyHint({ text, children }: { text: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 ring-1 ring-slate-100 dark:bg-slate-800/60 dark:ring-slate-700">
-      <span className="text-xs text-slate-400 dark:text-slate-500">{text}</span>
+      <span className="text-xs text-slate-600 dark:text-slate-300">{text}</span>
       {children}
     </div>
   );

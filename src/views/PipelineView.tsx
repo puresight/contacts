@@ -63,12 +63,12 @@ export function PipelineView({
                   <span className={`h-2 w-2 rounded-full ${STAGE_STYLES[s].dot}`} />
                   {STAGE_STYLES[s].label}
                 </span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-600 dark:text-slate-300">
                   {items.length} {s !== 'personal' ? `· ${formatMoney(stageTotal)}` : ''}
                 </span>
               </div>
               {items.length === 0 ? (
-                <p className="px-1 py-2 text-xs text-slate-400 dark:text-slate-500">Nothing here yet.</p>
+                <p className="px-1 py-2 text-xs text-slate-600 dark:text-slate-300">Nothing here yet.</p>
               ) : (
                 <ul className="space-y-2">
                   {items.map((c) => (
@@ -80,7 +80,7 @@ export function PipelineView({
                         <Avatar name={c.name} />
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{c.name}</p>
-                          <p className="truncate text-xs text-slate-500">{c.company || c.emails[0]?.value || '—'}</p>
+                          <p className="truncate text-xs text-slate-600 dark:text-slate-300">{c.company || c.emails[0]?.value || '—'}</p>
                         </div>
                         {c.value > 0 && (
                           <span className="shrink-0 text-sm font-semibold text-emerald-600">

@@ -25,7 +25,7 @@ export function ConfirmDeleteDialog({
         <h2 id="delete-dialog-title" className="text-lg font-semibold text-slate-900 dark:text-slate-100">
           Delete contact?
         </h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p className="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           Are you sure you want to delete <span className="font-medium text-slate-800 dark:text-slate-200">{name}</span>?
         </p>
         <div className="mt-5 flex justify-end gap-2">

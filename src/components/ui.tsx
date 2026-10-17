@@ -73,8 +73,8 @@ export function SearchInput({
 export function SectionHeader({ title, count }: { title: string; count?: number }) {
   return (
     <div className="flex items-baseline justify-between">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">{title}</h2>
-      {typeof count === 'number' && <span className="text-xs text-slate-400">{count}</span>}
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{title}</h2>
+      {typeof count === 'number' && <span className="text-xs text-slate-600 dark:text-slate-300">{count}</span>}
     </div>
   );
 }
@@ -96,7 +96,7 @@ export function EmptyState({
         <Icon className="h-6 w-6 text-slate-400 dark:text-slate-500" />
       </div>
       <p className="font-medium text-slate-700 dark:text-slate-200">{title}</p>
-      {hint && <p className="mt-1 max-w-xs text-sm text-slate-500 dark:text-slate-400">{hint}</p>}
+      {hint && <p className="mt-1 max-w-xs text-sm text-slate-600 dark:text-slate-300">{hint}</p>}
       {action && (
         <button
           onClick={action.onClick}
@@ -206,7 +206,7 @@ export function FabPlus({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       aria-label="New contact"
-      className="fixed bottom-20 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 active:scale-95 active:bg-indigo-700 md:hidden dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:active:bg-indigo-600"
+      className="fixed bottom-24 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 active:scale-95 active:bg-indigo-700 md:hidden dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:active:bg-indigo-600"
     >
       <Plus className="h-6 w-6" />
     </button>

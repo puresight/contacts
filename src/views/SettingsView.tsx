@@ -58,7 +58,7 @@ export function SettingsView({
           </div>
           <div>
             <p className="font-medium text-slate-900 dark:text-slate-100">{workspaceName}</p>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Stored locally on this device</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">Stored locally on this device</p>
           </div>
         </div>
         <div className="mt-4 grid grid-cols-3 gap-2 text-center">
@@ -72,7 +72,7 @@ export function SettingsView({
         <p className="mb-1 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
           <Sun className="h-4 w-4 text-slate-400 dark:text-slate-500" /> Appearance
         </p>
-        <p className="mb-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p className="mb-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           Choose light, dark, or follow your device setting. "System" updates automatically when your OS
           switches theme.
         </p>
@@ -83,7 +83,7 @@ export function SettingsView({
         <p className="mb-1 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
           <Database className="h-4 w-4 text-slate-400 dark:text-slate-500" /> Data &amp; sync
         </p>
-        <p className="mb-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p className="mb-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           Everything lives in your browser's local database, so the app works fully offline. Each record is
           flagged for future cloud sync but nothing leaves this device.
         </p>
@@ -98,7 +98,7 @@ export function SettingsView({
         <p className="mb-1 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
           <ShieldCheck className="h-4 w-4 text-emerald-500" /> Privacy
         </p>
-        <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           No account, no tracking, no server. Your contacts never leave the device unless you export them.
         </p>
       </div>
@@ -107,7 +107,7 @@ export function SettingsView({
         <p className="mb-1 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
           <Trash2 className="h-4 w-4 text-rose-500" /> Danger zone
         </p>
-        <p className="mb-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p className="mb-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           Permanently erase every contact, interaction, and link on this device. Sample data will be restored
           on next launch.
         </p>
@@ -128,7 +128,7 @@ export function SettingsView({
         )}
       </div>
 
-      <p className="flex items-center justify-center gap-1.5 pb-2 text-xs text-slate-400 dark:text-slate-500">
+      <p className="flex items-center justify-center gap-1.5 pb-2 text-xs text-slate-600 dark:text-slate-300">
         <Info className="h-3.5 w-3.5" />
         Local CRM v1.0 · offline-first
       </p>
@@ -146,7 +146,7 @@ function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl bg-slate-50 py-2.5 ring-1 ring-slate-100 dark:bg-slate-800/60 dark:ring-slate-700">
       <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{value}</p>
-      <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
+      <p className="text-xs text-slate-600 dark:text-slate-300">{label}</p>
     </div>
   );
 }

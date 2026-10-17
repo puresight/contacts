@@ -134,7 +134,7 @@ export function AppShell() {
         <Users className="h-6 w-6 text-slate-300 dark:text-slate-600" />
       </div>
       <p className="font-medium text-slate-600 dark:text-slate-300">Select a contact</p>
-      <p className="max-w-[240px] text-sm text-slate-400 dark:text-slate-500">
+      <p className="max-w-[240px] text-sm text-slate-600 dark:text-slate-300">
         Pick someone from the list to see their profile and timeline.
       </p>
     </div>
@@ -241,14 +241,14 @@ export function AppShell() {
 
         {tab === 'contacts' ? (
           /* Desktop split layout for contacts */
-          <div className="md:flex md:h-[calc(100vh-57px)]">
+          <main id="main-content" className="md:flex md:h-[calc(100vh-57px)]">
             <div className="mx-auto max-w-6xl px-4 py-4 pb-32 md:pb-6 md:w-[420px] md:shrink-0 md:overflow-y-auto md:border-r md:border-slate-200 dark:md:border-slate-800 md:px-4 md:py-4">
               <ContactsView contacts={contacts} onSelect={openContact} onNew={openNewForm} />
             </div>
             <div className="hidden flex-1 md:block md:overflow-hidden">{detailPane}</div>
-          </div>
+          </main>
         ) : (
-          <main className="mx-auto max-w-6xl px-4 py-4 pb-32 md:px-6 md:pb-10">
+          <main id="main-content" className="mx-auto max-w-6xl px-4 py-4 pb-32 md:px-6 md:pb-10">
             {tab === 'pipeline' && (
               <PipelineView contacts={contacts} onSelect={openContact} />
             )}
@@ -292,16 +292,17 @@ export function AppShell() {
       <FabPlus onClick={openNewForm} />
 
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden dark:border-slate-800 dark:bg-slate-900/95">
+      <nav aria-label="Main Navigation" className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[max(env(safe-area-inset-bottom),0.25rem)] backdrop-blur md:hidden dark:border-slate-800 dark:bg-slate-900/95">
         <div className="grid grid-cols-4">
           {TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors ${
+              aria-current={tab === t.id ? 'page' : undefined}
+              className={`flex min-h-[48px] flex-col items-center justify-center gap-1 py-1.5 text-[11px] font-medium transition-colors ${
                 tab === t.id
                   ? 'text-indigo-600 dark:text-indigo-400'
-                  : 'text-slate-500 dark:text-slate-400'
+                  : 'text-slate-600 dark:text-slate-300'
               }`}
             >
               <t.icon className={`h-5 w-5 ${tab === t.id ? NAV_CLASSES[t.id] : ''}`} />
@@ -343,7 +344,7 @@ function CenterMessage({
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-600 dark:border-slate-700 dark:border-t-indigo-400" />
       )}
       <p className="font-semibold text-slate-800 dark:text-slate-100">{title}</p>
-      <p className="max-w-sm text-sm text-slate-500 dark:text-slate-400">{body}</p>
+      <p className="max-w-sm text-sm text-slate-600 dark:text-slate-300">{body}</p>
       {detail && <p className="max-w-sm text-xs text-slate-400 dark:text-slate-500">{detail}</p>}
     </div>
   );

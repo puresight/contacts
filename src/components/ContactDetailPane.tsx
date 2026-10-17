@@ -103,7 +103,7 @@ export function ContactDetailPane({
           <Avatar name={contact.name} email={primaryEmail} size="md" />
           <div className="min-w-0">
             <h2 className="truncate font-semibold text-slate-900 dark:text-slate-100">{contact.name}</h2>
-            <p className="truncate text-sm text-slate-500">
+            <p className="truncate text-sm text-slate-600 dark:text-slate-300">
               {contact.title ? `${contact.title}${contact.company ? ' · ' + contact.company : ''}` : contact.company || '—'}
             </p>
           </div>
@@ -181,7 +181,7 @@ export function ContactDetailPane({
               ))}
             </div>
           )}
-          {contact.notes && <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{contact.notes}</p>}
+          {contact.notes && <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{contact.notes}</p>}
         </div>
 
         <LabeledSections contact={contact} />
@@ -208,7 +208,7 @@ export function ContactDetailPane({
               <InteractionComposer onAdd={addInteraction} onClose={() => setComposing(false)} />
             )}
             {sorted.length === 0 && !composing ? (
-              <p className="py-6 text-center text-sm text-slate-400 dark:text-slate-500">
+              <p className="py-6 text-center text-sm text-slate-600 dark:text-slate-300">
                 No interactions yet. Log a note, call, email, or meeting.
               </p>
             ) : (
@@ -235,7 +235,7 @@ export function ContactDetailPane({
           </div>
         ) : (
           <div className="space-y-2">
-            <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
+            <p className="mb-2 text-xs text-slate-600 dark:text-slate-300">
               iLife suite integrations are coming soon. Placeholders appear here so linking is one tap when
               they land.
             </p>
@@ -292,7 +292,7 @@ export function ContactDetailPane({
               </span>
               Attach Photo
             </button>
-            <p className="flex items-center gap-1.5 pt-1 text-xs text-slate-400 dark:text-slate-500">
+            <p className="flex items-center gap-1.5 pt-1 text-xs text-slate-600 dark:text-slate-300">
               <Link2 className="h-3.5 w-3.5" />
               Placeholders only — nothing is sent anywhere.
             </p>
@@ -331,7 +331,7 @@ function Row({
   return (
     <div className="flex items-center gap-2">
       <Icon className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500" />
-      <dt className="shrink-0 text-slate-500 dark:text-slate-400">{label}</dt>
+      <dt className="shrink-0 text-slate-600 dark:text-slate-300">{label}</dt>
       <dd className="min-w-0 flex-1 truncate text-right font-medium text-slate-800 dark:text-slate-200">{value}</dd>
     </div>
   );
@@ -441,7 +441,7 @@ function LabeledSections({ contact }: { contact: Contact }) {
                 <LabelChip text={a.label} />
                 <span className="min-w-0 flex-1 leading-snug text-slate-800 dark:text-slate-200">
                   {a.street && <span className="block">{a.street}</span>}
-                  <span className="block text-slate-500 dark:text-slate-400">
+                  <span className="block text-slate-600 dark:text-slate-300">
                     {[a.city, a.state, a.postalCode].filter(Boolean).join(', ')}
                     {a.country ? (a.city || a.state ? ' · ' : '') + a.country : ''}
                   </span>
