@@ -289,7 +289,7 @@ export function AppShell() {
         </div>
       )}
 
-      <FabPlus onClick={openNewForm} />
+      <FabPlus onClick={() => openNewForm()} />
 
       {/* Mobile bottom nav */}
       <nav aria-label="Main Navigation" className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[max(env(safe-area-inset-bottom),0.25rem)] backdrop-blur md:hidden dark:border-slate-800 dark:bg-slate-900/95">
