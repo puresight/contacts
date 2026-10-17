@@ -102,7 +102,7 @@ export function ContactDetailPane({
           </button>
           <Avatar name={contact.name} email={primaryEmail} size="md" />
           <div className="min-w-0">
-            <h2 className="truncate font-semibold text-slate-900">{contact.name}</h2>
+            <h2 className="truncate font-semibold text-slate-900 dark:text-slate-100">{contact.name}</h2>
             <p className="truncate text-sm text-slate-500">
               {contact.title ? `${contact.title}${contact.company ? ' · ' + contact.company : ''}` : contact.company || '—'}
             </p>
@@ -157,7 +157,7 @@ export function ContactDetailPane({
           <div className="flex items-center justify-between">
             <StageBadge stage={contact.stage} />
             {contact.value > 0 && (
-              <span className="inline-flex items-center gap-1 font-semibold text-slate-900">
+              <span className="inline-flex items-center gap-1 font-semibold text-slate-900 dark:text-slate-100">
                 <DollarSign className="h-4 w-4 text-emerald-600" />
                 {formatMoney(contact.value)}
               </span>

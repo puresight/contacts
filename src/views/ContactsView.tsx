@@ -84,7 +84,7 @@ export function ContactsView({
               >
                 <Avatar name={c.name} email={firstEmail} />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium text-slate-900">{c.name}</p>
+                  <p className="truncate font-medium text-slate-900 dark:text-slate-100">{c.name}</p>
                   <p className="truncate text-sm text-slate-500">
                     {c.company || firstEmail || 'No details'}
                   </p>
