@@ -123,10 +123,9 @@ export function AppShell() {
         setSelectedId(null);
       }}
       onEdit={(c) => openEditForm(c.id)}
-      onDeleted={(id) => {
+      onDeleted={() => {
         setSelectedId(null);
         setMobileDetailOpen(false);
-        void id;
       }}
     />
   ) : (

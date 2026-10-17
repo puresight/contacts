@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Phone, Mail, UserPlus, Users } from 'lucide-react';
+import { Phone, Mail, UserPlus, Users, Trash2 } from 'lucide-react';
 import type { Contact, Stage } from '@/db/database';
+import { db } from '@/db/database';
 import { STAGE_STYLES } from '@/lib/stages';
 import { StagePills, SearchInput, EmptyState, IconActionButton } from '@/components/ui';
 import { Avatar } from '@/components/Avatar';
+import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 
 export function ContactsView({
   contacts,
@@ -16,6 +18,7 @@ export function ContactsView({
 }) {
   const [query, setQuery] = useState('');
   const [stage, setStage] = useState<Stage | 'all'>('all');
+  const [deleting, setDeleting] = useState<Contact | null>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -116,11 +119,34 @@ export function ContactsView({
                         : () => {}
                     }
                   />
+                  <button
+                    onClick={() => setDeleting(c)}
+                    aria-label="Delete contact"
+                    title="Delete contact"
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-slate-400 transition-colors hover:text-red-500 hover:bg-red-500/10 dark:hover:text-red-400 dark:hover:bg-red-400/10"
+                  >
+                    <Trash2 className="h-[18px] w-[18px]" />
+                  </button>
                 </div>
               </div>
             </li>
           ))}
         </ul>
+      )}
+
+      {deleting && (
+        <ConfirmDeleteDialog
+          name={deleting.name}
+          onCancel={() => setDeleting(null)}
+          onConfirm={async () => {
+            await db.contacts.update(deleting.id, {
+              isDeleted: true,
+              updatedAt: new Date().toISOString(),
+              synced: 0,
+            });
+            setDeleting(null);
+          }}
+        />
       )}
     </div>
   );

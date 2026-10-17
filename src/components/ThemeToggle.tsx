@@ -1,40 +1,27 @@
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { useTheme, type ThemeMode } from '@/hooks/useTheme';
 
-const OPTIONS: Array<{ id: ThemeMode; label: string; icon: React.ComponentType<{ className?: string }> }> = [
-  { id: 'light', label: 'Light', icon: Sun },
-  { id: 'dark', label: 'Dark', icon: Moon },
-  { id: 'system', label: 'System', icon: Monitor },
-];
+const ORDER: ThemeMode[] = ['system', 'light', 'dark'];
+
+const META: Record<ThemeMode, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
+  system: { label: 'System', icon: Monitor },
+  light: { label: 'Light', icon: Sun },
+  dark: { label: 'Dark', icon: Moon },
+};
 
 export function ThemeToggle({ className = '' }: { className?: string }) {
   const { mode, setMode } = useTheme();
+  const next = ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length];
+  const { label, icon: Icon } = META[mode];
 
   return (
-    <div
-      role="radiogroup"
-      aria-label="Theme"
-      className={`inline-flex items-center gap-0.5 rounded-full bg-slate-100 p-1 dark:bg-slate-800 ${className}`}
+    <button
+      onClick={() => setMode(next)}
+      aria-label={`Theme: ${label} (click for ${META[next].label})`}
+      title={`Theme: ${label} (click for ${META[next].label})`}
+      className={`flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors ${className}`}
     >
-      {OPTIONS.map((o) => {
-        const active = mode === o.id;
-        return (
-          <button
-            key={o.id}
-            role="radio"
-            aria-checked={active}
-            title={o.label}
-            onClick={() => setMode(o.id)}
-            className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
-              active
-                ? 'bg-indigo-600/15 text-indigo-700 dark:bg-indigo-400/25 dark:text-indigo-300'
-                : 'text-slate-500 hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-700'
-            }`}
-          >
-            <o.icon className="h-4 w-4" />
-          </button>
-        );
-      })}
-    </div>
+      <Icon className="h-[18px] w-[18px]" />
+    </button>
   );
 }

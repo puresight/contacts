@@ -22,6 +22,8 @@ import { STAGE_STYLES, formatMoney, relativeTime } from '@/lib/stages';
 import { StageBadge } from './ui';
 import { InteractionComposer } from './InteractionComposer';
 import { Avatar } from './Avatar';
+import { ConfirmDeleteDialog } from './ConfirmDeleteDialog';
+import { Trash2 } from 'lucide-react';
 
 const KIND_ICON: Record<InteractionKind, React.ComponentType<{ className?: string }>> = {
   note: MessageSquare,
@@ -63,6 +65,7 @@ export function ContactDetailPane({
 }) {
   const [tab, setTab] = useState<'timeline' | 'suite'>('timeline');
   const [composing, setComposing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const primaryEmail = contact.emails[0]?.value;
   const primaryPhone = contact.phones[0]?.value;
@@ -114,16 +117,12 @@ export function ContactDetailPane({
             <Pencil className="h-[18px] w-[18px]" />
           </button>
           <button
-            onClick={async () => {
-              if (confirm(`Delete ${contact.name}? This cannot be undone.`)) {
-                await db.contacts.delete(contact.id);
-                onDeleted(contact.id);
-              }
-            }}
+            onClick={() => setConfirmDelete(true)}
             aria-label="Delete contact"
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 hover:bg-rose-50 hover:text-rose-600 dark:text-slate-400 dark:hover:bg-rose-950/60 dark:hover:text-rose-400"
+            title="Delete contact"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 transition-colors hover:text-red-500 hover:bg-red-500/10 dark:hover:text-red-400 dark:hover:bg-red-400/10"
           >
-            <X className="h-[18px] w-[18px]" />
+            <Trash2 className="h-[18px] w-[18px]" />
           </button>
         </div>
       </div>
@@ -300,6 +299,22 @@ export function ContactDetailPane({
           </div>
         )}
       </div>
+
+      {confirmDelete && (
+        <ConfirmDeleteDialog
+          name={contact.name}
+          onCancel={() => setConfirmDelete(false)}
+          onConfirm={async () => {
+            setConfirmDelete(false);
+            await db.contacts.update(contact.id, {
+              isDeleted: true,
+              updatedAt: new Date().toISOString(),
+              synced: 0,
+            });
+            onDeleted(contact.id);
+          }}
+        />
+      )}
     </div>
   );
 }
