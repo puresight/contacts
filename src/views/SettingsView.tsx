@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { HardDrive, Database, Info, Download, Trash2, ShieldCheck, Sun, Monitor, Moon } from 'lucide-react';
+import { HardDrive, Database, Info, Download, Trash2, ShieldCheck, Sun, Monitor, Moon, ALargeSmall } from 'lucide-react';
 import { db } from '@/db/database';
 import { FilledButton, GhostButton } from '@/components/ui';
 import { useTheme, type ThemeMode } from '@/context/ThemeContext';
+import { useTextSize, type TextSize } from '@/context/TextSizeContext';
 
 export function SettingsView({
   workspaceName,
@@ -77,6 +78,16 @@ export function SettingsView({
           switches theme.
         </p>
         <AppearanceOptions />
+      </div>
+
+      <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
+        <p className="mb-1 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
+          <ALargeSmall className="h-4 w-4 text-slate-400 dark:text-slate-500" /> Text size
+        </p>
+        <p className="mb-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          Make everything easier to read. The change applies to the entire app instantly.
+        </p>
+        <TextSizeOptions />
       </div>
 
       <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
@@ -164,6 +175,36 @@ function AppearanceOptions() {
           }`}
         >
           <Icon className="h-4 w-4" />
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function TextSizeOptions() {
+  const { size, setSize } = useTextSize();
+  const options: { id: TextSize; label: string }[] = [
+    { id: 'small', label: 'Small' },
+    { id: 'medium', label: 'Medium' },
+    { id: 'large', label: 'Large' },
+  ];
+  return (
+    <div role="radiogroup" aria-label="Text size" className="grid max-w-xs grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
+      {options.map(({ id, label }) => (
+        <button
+          key={id}
+          role="radio"
+          aria-checked={size === id}
+          onClick={() => setSize(id)}
+          className={`flex min-h-[44px] items-center justify-center rounded-lg transition-colors ${
+            id === 'small' ? 'text-xs' : id === 'medium' ? 'text-sm' : 'text-base'
+          } font-medium ${
+            size === id
+              ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100'
+              : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100'
+          }`}
+        >
           {label}
         </button>
       ))}
