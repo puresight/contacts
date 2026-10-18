@@ -107,7 +107,7 @@ export function SettingsView({
 
       <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
         <p className="mb-1 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
-          <ShieldCheck className="h-4 w-4 text-emerald-500" /> Privacy
+          <ShieldCheck className="h-4 w-4 text-momentum-600 dark:text-momentum-400" /> Privacy
         </p>
         <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           No account, no tracking, no server. Your contacts never leave the device unless you export them.
@@ -145,7 +145,7 @@ export function SettingsView({
       </p>
 
       {message && (
-        <div className="fixed bottom-28 left-1/2 z-50 -translate-x-1/2 rounded-full bg-slate-900 px-4 py-2 text-sm text-white shadow-lg md:bottom-8 dark:bg-slate-100 dark:text-slate-900">
+        <div className="fixed bottom-28 left-1/2 z-50 -translate-x-1/2 rounded-full bg-slate-900 px-4 py-2 text-sm text-white shadow-glow-lg md:bottom-8 dark:bg-slate-100 dark:text-slate-900">
           {message}
         </div>
       )}

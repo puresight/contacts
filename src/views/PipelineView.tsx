@@ -40,7 +40,7 @@ export function PipelineView({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-3.5 text-white shadow-sm dark:from-indigo-700 dark:to-indigo-600">
+      <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-3.5 text-white shadow-glow dark:from-indigo-700 dark:to-indigo-600">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-indigo-100">Open pipeline</p>
           <p className="text-xl font-semibold">{formatMoney(total)}</p>
@@ -57,7 +57,7 @@ export function PipelineView({
           const items = columns.get(s)!;
           const stageTotal = items.reduce((a, c) => a + c.value, 0);
           return (
-            <div key={s} className="rounded-2xl bg-white p-3 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
+            <div key={s} className="rounded-2xl bg-white p-3 ring-1 ring-slate-200 shadow-glow dark:bg-slate-900 dark:ring-slate-800 dark:shadow-glow-lg">
               <div className="mb-2 flex items-center justify-between px-1">
                 <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-800 dark:text-slate-200">
                   <span className={`h-2 w-2 rounded-full ${STAGE_STYLES[s].dot}`} />
@@ -83,7 +83,7 @@ export function PipelineView({
                           <p className="truncate text-xs text-slate-600 dark:text-slate-300">{c.company || c.emails[0]?.value || '—'}</p>
                         </div>
                         {c.value > 0 && (
-                          <span className="shrink-0 text-sm font-semibold text-emerald-600">
+                          <span className="shrink-0 text-sm font-semibold text-momentum-700 dark:text-momentum-300">
                             {formatMoney(c.value)}
                           </span>
                         )}

@@ -100,7 +100,7 @@ export function ContactsView({
                         aria-label={`Call ${c.name}`}
                         title={`Call ${c.name}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="flex h-10 w-10 items-center justify-center rounded-full text-emerald-600 transition-colors hover:bg-emerald-500/10 hover:text-emerald-700 dark:text-emerald-400 dark:hover:bg-emerald-400/10"
+                        className="flex h-10 w-10 items-center justify-center rounded-full text-momentum-700 transition-colors hover:bg-momentum-500/10 hover:text-momentum-800 dark:text-momentum-300 dark:hover:bg-momentum-400/10"
                       >
                         <Phone className="h-[18px] w-[18px]" />
                       </a>

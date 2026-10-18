@@ -12,14 +12,14 @@ export const STAGE_STYLES: Record<Stage, { label: string; badge: string; dot: st
   prospect: {
     label: 'Prospect',
     badge:
-      'bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:ring-amber-900',
-    dot: 'bg-amber-500',
+      'bg-attention-50 text-attention-800 ring-1 ring-attention-200 dark:bg-attention-950/60 dark:text-attention-200 dark:ring-attention-900',
+    dot: 'bg-attention-500',
   },
   active: {
     label: 'Active',
     badge:
-      'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:ring-emerald-900',
-    dot: 'bg-emerald-500',
+      'bg-momentum-50 text-momentum-800 ring-1 ring-momentum-200 dark:bg-momentum-950/60 dark:text-momentum-200 dark:ring-momentum-900',
+    dot: 'bg-momentum-500',
   },
   personal: {
     label: 'Personal',

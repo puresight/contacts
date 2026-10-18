@@ -10,9 +10,9 @@ const PRESETS: Array<{
   tone: string;
 }> = [
   { kind: 'note', label: 'Note', icon: MessageSquare, tone: 'text-slate-600 bg-slate-100 dark:text-slate-300 dark:bg-slate-800' },
-  { kind: 'call', label: 'Call', icon: Phone, tone: 'text-emerald-600 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-950/60' },
+  { kind: 'call', label: 'Call', icon: Phone, tone: 'text-momentum-700 bg-momentum-50 dark:text-momentum-300 dark:bg-momentum-950/60' },
   { kind: 'email', label: 'Email', icon: Mail, tone: 'text-indigo-600 bg-indigo-50 dark:text-indigo-300 dark:bg-indigo-950/60' },
-  { kind: 'meeting', label: 'Meeting', icon: CalendarDays, tone: 'text-amber-600 bg-amber-50 dark:text-amber-300 dark:bg-amber-950/60' },
+  { kind: 'meeting', label: 'Meeting', icon: CalendarDays, tone: 'text-attention-700 bg-attention-50 dark:text-attention-200 dark:bg-attention-950/60' },
 ];
 
 export function InteractionComposer({

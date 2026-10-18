@@ -34,9 +34,9 @@ const KIND_ICON: Record<InteractionKind, React.ComponentType<{ className?: strin
 
 const KIND_TONE: Record<InteractionKind, string> = {
   note: 'bg-slate-100 text-slate-600',
-  call: 'bg-emerald-50 text-emerald-600',
+  call: 'bg-momentum-50 text-momentum-700',
   email: 'bg-indigo-50 text-indigo-600',
-  meeting: 'bg-amber-50 text-amber-600',
+  meeting: 'bg-attention-50 text-attention-700',
 };
 
 const LINK_META: Record<
@@ -132,7 +132,7 @@ export function ContactDetailPane({
           {primaryPhone && (
             <a
               href={`tel:${primaryPhone}`}
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100 active:bg-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900/60"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-momentum-50 px-3 py-2.5 text-sm font-medium text-momentum-800 transition hover:bg-momentum-100 active:bg-momentum-200 dark:bg-momentum-950/60 dark:text-momentum-200 dark:hover:bg-momentum-900/60"
             >
               <Phone className="h-4 w-4" /> Call
             </a>
@@ -158,7 +158,7 @@ export function ContactDetailPane({
             <StageBadge stage={contact.stage} />
             {contact.value > 0 && (
               <span className="inline-flex items-center gap-1 font-semibold text-slate-900 dark:text-slate-100">
-                <DollarSign className="h-4 w-4 text-emerald-600" />
+                <DollarSign className="h-4 w-4 text-momentum-700 dark:text-momentum-300" />
                 {formatMoney(contact.value)}
               </span>
             )}
@@ -269,7 +269,7 @@ export function ContactDetailPane({
               onClick={() => addLinkStub('calendar')}
               className="flex w-full items-center gap-3 rounded-xl bg-white px-3 py-3 text-left text-sm font-medium text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-50 active:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:hover:bg-slate-700"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-300">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-attention-50 text-attention-700 dark:bg-attention-950/60 dark:text-attention-200">
                 <CalendarPlus className="h-4 w-4" />
               </span>
               Link Calendar Event
@@ -278,7 +278,7 @@ export function ContactDetailPane({
               onClick={() => addLinkStub('kanban')}
               className="flex w-full items-center gap-3 rounded-xl bg-white px-3 py-3 text-left text-sm font-medium text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-50 active:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:hover:bg-slate-700"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-300">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-momentum-50 text-momentum-700 dark:bg-momentum-950/60 dark:text-momentum-200">
                 <KanbanSquare className="h-4 w-4" />
               </span>
               Link Kanban Task
