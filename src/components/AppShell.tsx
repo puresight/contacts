@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
   Users,
@@ -20,7 +20,8 @@ import { ContactDetailPane } from '@/components/ContactDetailPane';
 import { FabPlus, TonalButton } from '@/components/ui';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { newContact } from '@/db/database';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, Download } from 'lucide-react';
+import { useInstallPrompt } from '@/context/InstallPromptContext';
 
 type Tab = 'contacts' | 'pipeline' | 'activity' | 'settings';
 
@@ -47,6 +48,14 @@ export function AppShell() {
   const [prefillName, setPrefillName] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
+  const { canInstall, promptInstall } = useInstallPrompt();
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('action') === 'new-contact') {
+      setEditing(null);
+      setFormOpen(true);
+    }
+  }, []);
 
   const contacts = useLiveQuery(() => db.contacts.filter((c) => !c.isDeleted).toArray(), [], undefined);
   const interactions = useLiveQuery(
@@ -230,6 +239,16 @@ export function AppShell() {
               {TABS.find((t) => t.id === tab)?.label}
             </h1>
             <ThemeToggle />
+            {canInstall && (
+              <button
+                onClick={promptInstall}
+                title="Install app"
+                aria-label="Install app"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-indigo-600 transition hover:bg-indigo-50 active:bg-indigo-100 md:hidden dark:text-indigo-400 dark:hover:bg-indigo-950/60"
+              >
+                <Download className="h-5 w-5" />
+              </button>
+            )}
             <TonalButton
               onClick={() => openNewForm()}
               className="!hidden md:!inline-flex !py-2 dark:!bg-indigo-400/20 dark:!text-indigo-300 dark:hover:!bg-indigo-400/30"
